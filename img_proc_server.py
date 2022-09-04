@@ -96,6 +96,12 @@ def main():
                 count += 1
             if count >= 50:
                 notification.stalemate_notification(current_target, args.webhook_endpoint)
+                hs = redis_client.get('hand_stop_count')
+                if hs is None:
+                    hs = "1"
+                else:
+                    hs = str(int(hs) + 1)
+                redis_client.set('hand_stop_count', hs)
                 count = 0
 
 if __name__ == "__main__":

@@ -66,7 +66,6 @@ def main():
         model_cfg, model_outputs = posenet.load_model(args.model, sess)
         output_stride = model_cfg['output_stride']
         while True:
-            print(count)
             if time.time() - last_access > 1.0:
                 inst = redis_client.get('instruction')
                 if current_target != redis_client.get("current_target"):
@@ -95,7 +94,7 @@ def main():
                 continue
             if motion_frm.mean() < 10:
                 count += 1
-            if count >= 200:
+            if count >= 50:
                 notification.stalemate_notification(current_target, args.webhook_endpoint)
                 count = 0
 
